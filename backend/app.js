@@ -6,26 +6,32 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 require("dotenv").config();
-//db connection
+
+// DB Connection
 mongoose.connect(process.env.DATABASE, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true
 }).then(() => {
-  console.log("DB connecting ....");
+  console.log("DB CONNECTED");
 }).catch(() => {
-  console.log("Unable to connect to DB");
+  console.log("UNABLE to connect to DB");
 });
-//use parsing middleware
+
+// Use parsing middleware
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors);
-//port
+app.use(cors());
+
+// Import the routes
+const userRoutes = require("./routes/user");
+
+// Using routes
+app.use("/api", userRoutes);
 
 const port = process.env.PORT || 8000;
 
-//starting a server
-
+// Starting a server
 app.listen(port, () => {
   console.log(`App is running at ${port}`);
 });
